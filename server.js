@@ -10,7 +10,7 @@ const SHOPIFY_API_KEY = process.env.SHOPIFY_API_KEY;
 const SHOPIFY_API_SECRET = process.env.SHOPIFY_API_SECRET;
 
 // Third-party API URL
-const THIRD_PARTY_API_URL = 'http://stingray-app-4wzxb.ondigitalocean.app/video/api/videos/';
+const THIRD_PARTY_API_URL = 'http://stingray-app-4wzxb.ondigitalocean.app/video/api';
 
 // Middleware to parse JSON requests
 app.use(express.json());
@@ -45,23 +45,16 @@ app.get('/auth/callback', async (req, res) => {
 });
 
 // Endpoint to fetch videos
-app.get('/videos/:id', async (req, res) => {
-  const { id } = req.params;
+app.get('/videos', async (req, res) => {
   const { shop, accessToken } = req.query;
 
   try {
     // Fetch videos from the third-party API using the access token
-    const { data } = await axios.get(`${THIRD_PARTY_API_URL}${id}`, 
-
-
-    // {
-    //   headers: {
-    //     'X-Shopify-Access-Token': accessToken,
-    //   },
-    // }
-
-    
-    );
+    const { data } = await axios.get(THIRD_PARTY_API_URL, {
+      headers: {
+        'X-Shopify-Access-Token': accessToken,
+      },
+    });
 
     // Return the videos to the frontend
     res.json({ videos: data, shop, accessToken });
