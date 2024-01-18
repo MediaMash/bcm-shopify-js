@@ -55,6 +55,7 @@ app.get('/install', middleware((req, res) => {
 }));
 
 
+
 // Serve Shopify app views
 
 app.get('/', (req, res) => {

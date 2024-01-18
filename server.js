@@ -32,6 +32,7 @@ app.get('/auth/callback', async (req, res) => {
       client_secret: SHOPIFY_API_SECRET,
       code,
     });
+    
 
     // Store the access token securely (e.g., in a database)
     const accessToken = data.access_token;

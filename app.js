@@ -42,6 +42,7 @@ const SHOPIFY_CONFIG = {
     'SCOPE': SCOPE
   };
   
+  
 
 // ====================== Middleware below ================================
 function middleware(f) {
