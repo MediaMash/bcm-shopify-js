@@ -1,73 +1,71 @@
 const express = require('express');
-const { parse } = require('url');
-const querystring = require('querystring');
-const path = require('path');
-const dotenv = require('dotenv');
+const axios = require('axios');
+require('dotenv').config();
 
 const app = express();
+const PORT = process.env.PORT || 3000;
 
-// Serve static assets
-app.use(express.static(path.join(__dirname, 'public')));
-const { SHOPIFY_API_KEY, REDIRECT_URI, SCOPE, SHOPIFY_API_SECRET, HOST } = process.env;
-const port = parseInt(process.env.PORT, 10) || 3001;
+// Shopify App credentials
+const SHOPIFY_API_KEY = process.env.SHOPIFY_API_KEY;
+const SHOPIFY_API_SECRET = process.env.SHOPIFY_API_SECRET;
 
-const SHOPIFY_CONFIG = {
-    'API_KEY': SHOPIFY_API_KEY,
-    'API_SECRET': SHOPIFY_API_SECRET,
-    'APP_HOME': HOST,
-    'REDIRECT_URI': REDIRECT_URI,
-    'SCOPE': SCOPE
-  };
-  
+// Third-party API URL
+const THIRD_PARTY_API_URL = 'http://stingray-app-4wzxb.ondigitalocean.app/video/api/videos/';
 
-  app.use(express.static('public')); // Create a 'public' directory and put your CSS and images there
+// Middleware to parse JSON requests
+app.use(express.json());
 
+// Endpoint for Shopify app installation
+app.get('/install', (req, res) => {
+  // Redirect to Shopify's OAuth page for app installation
+  res.redirect(`https://${req.query.shop}/admin/oauth/authorize?client_id=${SHOPIFY_API_KEY}&scope=read_content&redirect_uri=${process.env.APP_URL}/auth/callback`);
+});
 
+// OAuth callback endpoint
+app.get('/auth/callback', async (req, res) => {
+  const { shop, code } = req.query;
 
+  try {
+    // Exchange the authorization code for an access token
+    const { data } = await axios.post(`https://${shop}/admin/oauth/access_token`, {
+      client_id: SHOPIFY_API_KEY,
+      client_secret: SHOPIFY_API_SECRET,
+      code,
+    });
 
-// ====================== Middleware below ================================
-function middleware(f) {
-  return function decoratedFunction(req, res, next) {
-    const referer = req.headers.referer;
-    if (!referer) {
-      return res.status(401).json({ message: 'unauthorized' });
-    }
+    // Store the access token securely (e.g., in a database)
+    const accessToken = data.access_token;
 
-    const parsedUrl = parse(referer);
-    const queryParameters = querystring.parse(parsedUrl.query);
-
-    const shop = queryParameters.shop || 'test_shop';
-
-    req.shop = shop;
-    return f(req, res, next);
-  };
-}
-
-// ====================== Installation route below ================================
-app.get('/install', middleware((req, res) => {
-  const shop = req.query.shop;
-  if (!shop) {
-    return res.status(500).send('Error: parameter shop not found');
+    // Redirect to the app's main page
+    res.redirect(`${process.env.APP_URL}/dashboard?shop=${shop}&accessToken=${accessToken}`);
+  } catch (error) {
+    console.error('Error during authentication:', error.message);
+    res.status(500).send('Error during authentication');
   }
-
-  const authUrl = `https://${shop}/admin/oauth/authorize?client_id=${SHOPIFY_CONFIG.API_KEY}&redirect_uri=${SHOPIFY_CONFIG.REDIRECT_URI}`;
-  return res.redirect(authUrl);
-}));
-
-
-// Serve Shopify app views
-
-app.get('/', (req, res) => {
-    res.sendFile(__dirname + '/index.html');
 });
 
-app.get('/home', (req, res) => {
-  return res.send('<h2>Welcome to the home page</h2>');
+// Endpoint to fetch videos
+app.get('/videos/:id', async (req, res) => {
+  const { id } = req.params;
+  const { shop, accessToken } = req.query;
+
+  try {
+    // Fetch videos from the third-party API using the access token
+    const { data } = await axios.get(`${THIRD_PARTY_API_URL}${id}`, {
+      headers: {
+        'X-Shopify-Access-Token': accessToken,
+      },
+    });
+
+    // Return the videos to the frontend
+    res.json({ videos: data, shop, accessToken });
+  } catch (error) {
+    console.error('Error fetching videos:', error.message);
+    res.status(500).send('Error fetching videos');
+  }
 });
 
-
-// Start the server on port 3000
-const PORT = 3000;
+// Start the server
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
