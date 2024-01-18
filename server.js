@@ -51,11 +51,17 @@ app.get('/videos/:id', async (req, res) => {
 
   try {
     // Fetch videos from the third-party API using the access token
-    const { data } = await axios.get(`${THIRD_PARTY_API_URL}${id}`, {
-      headers: {
-        'X-Shopify-Access-Token': accessToken,
-      },
-    });
+    const { data } = await axios.get(`${THIRD_PARTY_API_URL}${id}`, 
+
+
+    // {
+    //   headers: {
+    //     'X-Shopify-Access-Token': accessToken,
+    //   },
+    // }
+
+    
+    );
 
     // Return the videos to the frontend
     res.json({ videos: data, shop, accessToken });
