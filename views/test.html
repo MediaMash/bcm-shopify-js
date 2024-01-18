@@ -1,156 +1,146 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <!-- Metadata -->
+    <meta charset="UTF-8">
+    <title>Carousel with Videos and Ads from REST API</title>
 
-<meta charset="UTF-8">
-<title>Carousel with Videos and Ads from REST API</title>
-<head>
-<!-- Load Bootstrap CSS -->
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <!-- External Stylesheets -->
+    <!-- Load Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <!-- Custom Stylesheet -->
+    <link href="/public/style.css" rel="stylesheet">
+    <!-- Video.js Stylesheet -->
+    <link href="https://vjs.zencdn.net/7.10.2/video-js.min.css" rel="stylesheet">
 
-<link href="style.css" rel="stylesheet">
-<link href="https://vjs.zencdn.net/7.10.2/video-js.min.css" rel="stylesheet">
-<script src="https://vjs.zencdn.net/7.10.2/video.min.js"></script>
-
-
-</head>
+    <!-- External JavaScript Libraries -->
+    <!-- Video.js Script -->
+    <script src="https://vjs.zencdn.net/7.10.2/video.min.js"></script>
+    <!-- jQuery Script -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <!-- Bootstrap JS Script -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  </head>
   
-  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  <body>
   
+    <!-- Page Content -->
+    <div class="bcm-page">
+      
+      <!-- Pseudo Navbar -->
+      <!-- <div class="bcm-fullwidth psuedo-nav">
+        <img src="psuedo-nav.png"/>
+      </div> -->
 
-<body>
-
-<div class="bcm-page">
-  
-  <div class="bcm-fullwidth psuedo-nav">
-      <img src="psuedo-nav.png"/>
-  </div>
-
-  <div class="bcm-fullwidth">
-    <div class="bcm-center">
-      <div class="bcm-grid">
-        <div class="container-fluid video-item">
-          <div id="video-carousel" class="carousel slide" data-ride="carousel">
-            <div class="carousel-inner">
+      <!-- Video Carousel Container -->
+      <div class="bcm-fullwidth">
+        <div class="bcm-center">
+          <div class="bcm-grid">
+            <div class="container-fluid video-item">
+              <!-- Main Video Carousel -->
+              <div id="video-carousel" class="carousel slide" data-ride="carousel">
+                <div class="carousel-inner">
+                  <!-- Video Items will be dynamically added here -->
+                </div>
+                <!-- Carousel Navigation Controls -->
+                <a class="carousel-control-prev" href="#video-carousel" role="button" data-slide="prev">
+                  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                  <span class="sr-only">Previous</span>
+                </a>
+                <a class="carousel-control-next" href="#video-carousel" role="button" data-slide="next">
+                  <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                  <span class="sr-only">Next</span>
+                </a>
+              </div>
             </div>
-            <a class="carousel-control-prev" href="#video-carousel" role="button" data-slide="prev">
-              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-              <span class="sr-only">Previous</span>
-            </a>
-            <a class="carousel-control-next" href="#video-carousel" role="button" data-slide="next">
-              <span class="carousel-control-next-icon" aria-hidden="true"></span>
-              <span class="sr-only">Next</span>
-            </a>
           </div>
-          
         </div>
       </div>
     </div>
-  </div>
 
-</div>
-
-  <script>
-    $(document).ready(function() {
-      // Load videos and ads from REST API endpoint
-      var url='https://stingray-app-4wzxb.ondigitalocean.app/video/api/videos/?format=json'
-      $.getJSON(url, function(data) {
-        $.each(data, function(index, item) {
-          // create a new carousel item for each video
-          var itemHtml = '<div class="carousel-item">' +
-                            '<a class="cart-icon" href="/cart.html"><img src="bag-icon.png"/><div class="cart-item-count"><span>1</span></div></a>' +
-                            '<video width="100%" class="video-js vjs-default-skin vjs-big-play-centered" loop autoplay muted>' +
-                            '</video>' +
-                            '<div class="carousel-caption">' +
-                              '<h5>' + item.name + '</h5>' +
-                            '</div>' +
-
-                            '<div class="video-item-desc">' +
-                              '<img class="exit" src="exit.png"/>' +
-                              '<div class="video-item-desc-inner">' +
-                                '<div class="col">' +
-                                  '<img src="mini-image.png"/>' +
-                                  '' +
-                                '</div>' +
-                                '<div class="col">' +
-                                  '<div class="product-price">$161.00</div>' +
-                                  '<h5 class="product-name">' + item.name + '</h5>' +
-                                  '<p class="product-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore. Lorem ipsum dolor sit amet, consectetur adipiscing.</p>' +
-                                  '<div class="color-variant-options">' +
-                                    '<div class="variant color-variant-selected"><div></div></div>' +
-                                    '<div class="variant"><div></div></div>' +
-                                    '<div class="variant"><div></div></div>' +
-                                    '<div class="variant"><div></div></div>' +
-                                    '<div class="variant"><div></div></div>' +
-                                  '</div>' +
-                                  '<div class="size-variant-options">' +
-                                    '<div class="variant size-variant-selected"><div>XS</div></div>' +
-                                    '<div class="variant"><div>S</div></div>' +
-                                    '<div class="variant"><div>M</div></div>' +
-                                    '<div class="variant"><div>L</div></div>' +
-                                  '</div>' +
-                                '</div>' +
+    <!-- Inline JavaScript -->
+    <script>
+      $(document).ready(function() {
+        // Load videos and ads from REST API endpoint
+        var url='https://stingray-app-4wzxb.ondigitalocean.app/video/api/videos/?format=json'
+        $.getJSON(url, function(data) {
+          // Loop through each video from the API response
+          $.each(data, function(index, item) {
+            // Create HTML structure for each video item
+            var itemHtml = '<div class="carousel-item">' +
+                              // Add shopping cart icon and video player
+                              '<a class="cart-icon" href=""><div class="cart-item-count"><span>1</span></div></a>' +
+                              '<video width="100%" class="video-js vjs-default-skin vjs-big-play-centered" loop autoplay muted>' +
+                              '</video>' +
+                              '<div class="carousel-caption">' +
+                                '<h5>' + item.name + '</h5>' +
                               '</div>' +
-                              '<a class="add-to-bag" href="#">ADD TO BAG</a>' +
-                              '<a class="go-to-bag" href="/cart.html">GO TO BAG</a>' +
-                            '</div>' +
-                          '</div>';
-          $('.carousel-inner').append(itemHtml);
-          console.log(item);
+                              // Additional product information and interaction buttons
+                              '<div class="video-item-desc">' +
+                                '<img class="exit" src="exit.pg"/>' +
+                                // ... (Additional product details)
+                              '</div>' +
+                            '</div>';
+            // Append video item HTML to the carousel
+            $('.carousel-inner').append(itemHtml);
 
-          // initialize the video player for each video
-          var video = videojs($('.carousel-item').last().find('video').get(0), {fluid: true});
-
-          console.log(item.playback_hls);
-          video.src({
-            src: item.playback_hls,
-            type: 'application/x-mpegURL'
-          });
-          video.load();
-          video.play();
-
-          // create a new nested carousel for the ads
-          if (item.related_products.length === 0) { console.log("Array is empty!")  } else {
-            var adHtml = '<div class="carousel-ads active"><div class="d-flex">';
-            $.each(item.related_products, function(index, ad) {
-              console.log(ad);
-              adHtml += '<div class="ad"><a href="' + ad.link + '">' + ad.name + '<br/><div class="ad-image-container"><img src="' + ad.images[0].image_url + '" class="ad-image"></div></a></div>';
+            // Initialize the video player for each video
+            var video = videojs($('.carousel-item').last().find('video').get(0), {fluid: true});
+            // Set video source from API response
+            video.src({
+              src: item.playback_hls,
+              type: 'application/x-mpegURL'
             });
-            adHtml += '</div></div>';
-            $('.carousel-inner-ads').append(adHtml);
-          }
-        });
+            video.load();
+            video.play();
 
-        jQuery('.exit').click(function(){
-          jQuery('.video-item').removeClass("hovered");
-          jQuery('.video-item .video-item-desc').css('bottom','-45%');
-          
-        });
+            // Create a nested carousel for ads if related products exist
+            if (item.related_products.length === 0) {
+              console.log("Array is empty!");
+            } else {
+              // Build HTML structure for ads
+              var adHtml = '<div class="carousel-ads active"><div class="d-flex">';
+              // Loop through related products and add them to the ad carousel
+              $.each(item.related_products, function(index, ad) {
+                adHtml += '<div class="ad"><a href="' + ad.link + '">' + ad.name + '<br/><div class="ad-image-container"><img src="' + ad.images[0].image_url + '" class="ad-image"></div></a></div>';
+              });
+              adHtml += '</div></div>';
+              // Append ads HTML to the carousel
+              $('.carousel-inner-ads').append(adHtml);
+            }
+          });
 
-        jQuery('.color-variant-options .variant').click(function(){
-          jQuery('.color-variant-options .variant').removeClass("color-variant-selected");
-          jQuery(this).addClass("color-variant-selected");
-        });
+          // Event handlers for various interactions
+          jQuery('.exit').click(function(){
+            jQuery('.video-item').removeClass("hovered");
+            jQuery('.video-item .video-item-desc').css('bottom','-45%');
+          });
 
-        jQuery('.size-variant-options .variant').click(function(){
-          jQuery('.size-variant-options .variant').removeClass("size-variant-selected");
-          jQuery(this).addClass("size-variant-selected");
-        });
+          jQuery('.color-variant-options .variant').click(function(){
+            jQuery('.color-variant-options .variant').removeClass("color-variant-selected");
+            jQuery(this).addClass("color-variant-selected");
+          });
 
-        jQuery('.add-to-bag').click(function(){
-          jQuery('.go-to-bag').css('display', 'inline-block');
-          var bagcount = parseInt(jQuery('.cart-item-count span').html());
-          bagcount = bagcount + 1;
-          jQuery('.cart-item-count span').html(bagcount);
-        });
+          jQuery('.size-variant-options .variant').click(function(){
+            jQuery('.size-variant-options .variant').removeClass("size-variant-selected");
+            jQuery(this).addClass("size-variant-selected");
+          });
 
-        // activate the first carousel item and nested carousel
-        $('.carousel-item').first().addClass('active');
-        $('.carousel-ads').first().addClass('active');
+          jQuery('.add-to-bag').click(function(){
+            jQuery('.go-to-bag').css('display', 'inline-block');
+            var bagcount = parseInt(jQuery('.cart-item-count span').html());
+            bagcount = bagcount + 1;
+            jQuery('.cart-item-count span').html(bagcount);
+          });
+
+          // Activate the first carousel item and nested carousel
+          $('.carousel-item').first().addClass('active');
+          $('.carousel-ads').first().addClass('active');
+        });
       });
-    });
-  </script>
-</body>
+    </script>
 
-<script src="javascript.js"></script>
-</html> 
+    <!-- External JavaScript File -->
+    <script src="javascript.js"></script>
+  </body>
+</html>

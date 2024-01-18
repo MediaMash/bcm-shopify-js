@@ -1,0 +1,238 @@
+body{
+    text-align: center;
+    display: inline-block;
+    width: 100%;
+    position: relative;
+}
+
+.bcm-page{
+    max-width: 1920px;
+    width: 100%;
+    display: inline-block;
+    position: relative;
+}
+
+.psuedo-nav {
+    width: 100%;
+    max-width: 1920px;
+}
+
+
+.psuedo-nav img{
+    width: 100%;
+}
+
+.bcm-fullwidth{
+    width: 100%;
+    display: inline-block;
+    position: relative;
+}
+
+.bcm-center{
+    width: 100%;
+    max-width: 1400px;
+    display: inline-block;
+    position: relative;
+}
+
+.bcm-grid{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 2em;
+    width: 100%;
+    position: relative;
+    padding-bottom: 10em;
+}
+
+.container-fluid{
+    padding: 0px;
+}
+
+.carousel-item {
+    box-shadow: 0px 0px 20px rgba(000,000,000, .5);
+    border-radius: .5em;
+    overflow: hidden;
+}
+
+.carousel-item .cart-icon{
+    position: absolute;
+    top: .5em;
+    right: .5em;
+    z-index: 100;
+}
+
+.carousel-item .cart-icon .cart-item-count{
+    color: white;
+    background-color: black;
+    position: absolute;
+    width: 2em;
+    height: 2em;
+    text-align: center;
+    bottom: .85em;
+    font-size: .8em;
+    right: .85em;
+    border-radius: 2em;
+}
+
+.carousel-item .cart-icon .cart-item-count span{
+    color: white;
+    display: inline-block;
+    position: relative;
+    line-height: 2em;
+}
+
+.carousel-item:hover .carousel-caption h5{
+    margin-top: -6em;
+    transition: .2s;
+}
+
+.carousel-item h5{
+    transition-duration: .2s;
+}
+
+.video-js {
+    height: auto !important;
+    padding-top: 0px !important;
+}
+
+.video-js .vjs-tech {
+    height: 780px !important;
+    position: relative !important;
+}
+
+.carousel-item .video-item-desc{
+    display: inline-block;
+    position: absolute;
+    bottom: -100%;
+    left: 0px;
+    width: 100%;
+    box-shadow: 0px 0px 30px rgba(000,000,000, .3);
+    background-color: white;
+    padding: 1em 1em 2em 1em;
+    min-height: 200px;
+    z-index: 100;
+    transition: .2s;
+    text-align: center;
+}
+
+.carousel-item .video-item-desc .exit{
+    position: absolute;
+    top: 1.3em;
+    display: inline-block;
+    right: 1.3em;
+    z-index: 200;
+    cursor: pointer;
+}
+
+.carousel-item .video-item-desc-inner{
+    display: grid;
+    grid-template-columns: 5em 1fr;
+    gap: 1.5em;
+    width: 100%;
+    position: relative;
+}
+
+.carousel-item .video-item-desc-inner .col{
+    padding: 0px;
+}
+
+.carousel-item .video-item-desc-inner img{
+    width: 100%;
+}
+
+.carousel-item .video-item-desc-inner h5{
+    text-align: left;
+    font-weight: 800;
+    font-size: 1.1em;
+}
+
+.carousel-item .video-item-desc-inner .product-price{
+    text-align: left;
+    width: 100%;
+    font-weight: 500;
+    font-size: .9em;
+}
+
+.carousel-item .video-item-desc-inner p{
+    text-align: left;
+    font-weight: 500;
+    font-size: .9em;
+    line-height: 1.1em;
+    word-wrap: normal;
+}
+
+.carousel-item .video-item-desc-inner .color-variant-options{
+    display: grid;
+    grid-template-columns: .8fr .8fr .8fr .8fr .8fr .8fr .8fr .8fr;
+    gap: .4em;
+    width: 100%;
+    margin-bottom: 1em;
+    position: relative;
+}
+
+.carousel-item .video-item-desc-inner .color-variant-options .variant{
+    box-sizing: content-box;
+    padding: 2px;
+    border-radius: 100em;
+}
+
+.color-variant-selected {
+    border: 2px solid black;
+    margin-top: -2px;
+}
+
+.carousel-item .video-item-desc-inner .color-variant-options .variant div{
+    height: 1.8em;
+    width: 1.8em;
+    border-radius: 100em;
+    background-color: black;
+    box-sizing: content-box;
+}
+
+.carousel-item .video-item-desc-inner .size-variant-options{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: .4em;
+    width: 100%;
+    position: relative;
+}
+
+.carousel-item .video-item-desc-inner .size-variant-options .variant{
+    height: 2em;
+    width: 100%;
+    border: 2px solid black;
+    background-color: white;
+    opacity: .2;
+}
+
+.size-variant-selected{
+    opacity: 1 !important;
+}
+
+.carousel-item .video-item-desc-inner .size-variant-options .variant div{
+    margin-top: 1px;
+}
+
+.carousel-item .video-item-desc .add-to-bag{
+    width: 100%;
+    background-color: black;
+    color: white;
+    display: inline-block;
+    position: relative;
+    padding: .5em 1em;
+    margin-top: 1em;
+    transition: .1s;
+    cursor: pointer;
+}
+
+.carousel-item .video-item-desc .go-to-bag{
+    width: 100%;
+    background-color: #0076e4;
+    color: white;
+    display: inline-block;
+    position: relative;
+    padding: .5em 1em;
+    margin-top: .3em;
+    transition: .1s;
+    display: none;
+}

@@ -7,7 +7,7 @@
 <!-- Load Bootstrap CSS -->
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 
-<link href="style.css" rel="stylesheet">
+<link href="/public/style.css" rel="stylesheet">
 <link href="https://vjs.zencdn.net/7.10.2/video-js.min.css" rel="stylesheet">
 <script src="https://vjs.zencdn.net/7.10.2/video.min.js"></script>
 
@@ -35,46 +35,20 @@
   <script>
     $(document).ready(function() {
       // Load videos and ads from REST API endpoint
-      var url='https://stingray-app-4wzxb.ondigitalocean.app/video/api/videos/?format=json'
+      var url='https://stingray-app-4wzxb.ondigitalocean.app/video/api/videos/'
       $.getJSON(url, function(data) {
         $.each(data, function(index, item) {
           // create a new carousel item for each video
           var itemHtml = '<div class="carousel-item">' +
-                            '<a class="cart-icon" href="/cart.html"><img src="bag-icon.png"/><div class="cart-item-count"><span>0</span></div></a>' +
+                            '<a class="cart-icon" href=""> </a>' +
                             '<video width="100%" class="video-js vjs-default-skin vjs-big-play-centered" loop autoplay muted>' +
                             '</video>' +
                             '<div class="carousel-caption">' +
-                              '<h5>' + item.name + '</h5>' +
+                              '<h5>' + item.name +'</h5>' +
                             '</div>' +
 
-                            '<div class="video-item-desc">' +
-                              '<img class="exit" src="exit.png"/>' +
-                              '<div class="video-item-desc-inner">' +
-                                '<div class="col">' +
-                                  '<img src="mini-image.png"/>' +
-                                  '' +
-                                '</div>' +
-                                '<div class="col">' +
-                                  '<div class="product-price">$161.00</div>' +
-                                  '<h5 class="product-name">' + item.name + '</h5>' +
-                                  '<p class="product-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore. Lorem ipsum dolor sit amet, consectetur adipiscing.</p>' +
-                                  '<div class="color-variant-options">' +
-                                    '<div class="variant color-variant-selected"><div></div></div>' +
-                                    '<div class="variant"><div></div></div>' +
-                                    '<div class="variant"><div></div></div>' +
-                                    '<div class="variant"><div></div></div>' +
-                                    '<div class="variant"><div></div></div>' +
-                                  '</div>' +
-                                  '<div class="size-variant-options">' +
-                                    '<div class="variant size-variant-selected"><div>XS</div></div>' +
-                                    '<div class="variant"><div>S</div></div>' +
-                                    '<div class="variant"><div>M</div></div>' +
-                                    '<div class="variant"><div>L</div></div>' +
-                                  '</div>' +
-                                '</div>' +
-                              '</div>' +
-                              '<div class="add-to-bag">ADD TO BAG</div>' +
-                              '<a class="go-to-bag" href="/cart.html">GO TO BAG</a>' +
+                            // '<div class="video-item-desc">' +
+                               
                             '</div>' +
                           '</div>';
           $('.bcm-grid').append(itemHtml);
