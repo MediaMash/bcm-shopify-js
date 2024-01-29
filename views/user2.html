@@ -1,0 +1,132 @@
+<!-- user.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Page</title>
+   <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    .video-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+    .video-card {
+      position: relative;
+      width: 30%;
+      border: 1px solid #ccc;
+      margin-bottom: 20px;
+      overflow: hidden;
+    }
+    video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .video-details {
+      /* position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      color: #fff;
+      padding: 10px;
+      box-sizing: border-box;
+      opacity: 0;
+      transition: opacity 0.3s; */
+
+
+      position: absolute;
+    right: 15%;
+    bottom: 20px;
+    left: 15%;
+    z-index: 10;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    color: #fff;
+    text-align: center;
+    }
+    .video-details h3, .video-details p {
+      margin: 0;
+    }
+    .video-card:hover .video-details {
+      opacity: 1;
+    }
+  </style> 
+</head>
+<body>
+
+  <h1>User Page</h1>
+
+  <div class="video-container" id="videoContainer">
+    <!-- Selected videos will be dynamically added here using JavaScript -->
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const selectedVideos = [20, 21, 22]; // Assuming these are the selected video IDs
+
+      const apiUrl = 'https://stingray-app-4wzxb.ondigitalocean.app/video/api/videos/';
+
+      fetch(apiUrl)
+        .then(response => response.json())
+        .then(data => {
+          console.log('API Response:', data);
+
+          const videoContainer = document.getElementById('videoContainer');
+
+          data.forEach(video => {
+            if (selectedVideos.includes(video.id)) {
+              const videoCard = document.createElement('div');
+              videoCard.className = 'video-card';
+
+              const videoElement = document.createElement('video');
+              videoElement.autoplay = true;
+              videoElement.muted = true;
+              videoElement.playsInline = true;
+
+              // Use HLS.js to play HLS video
+              if (Hls.isSupported()) {
+                const hls = new Hls();
+                hls.loadSource(video.playback_hls);
+                hls.attachMedia(videoElement);
+              } else if (videoElement.canPlayType('application/vnd.apple.mpegurl')) {
+                videoElement.src = video.playback_hls;
+              }
+
+              // Event listener to restart the video when it ends
+              videoElement.addEventListener('ended', function() {
+                videoElement.currentTime = 0;
+                videoElement.play();
+              });
+
+              const videoDetails = document.createElement('div');
+              videoDetails.className = 'video-details';
+
+              const titleElement = document.createElement('h3');
+              titleElement.textContent = video.name;
+
+              const descriptionElement = document.createElement('p');
+              descriptionElement.textContent = video.description;
+
+              videoDetails.appendChild(titleElement);
+              videoDetails.appendChild(descriptionElement);
+
+              videoCard.appendChild(videoElement);
+              videoCard.appendChild(videoDetails);
+
+              videoContainer.appendChild(videoCard);
+            }
+          });
+        })
+        .catch(error => console.error('Error fetching data:', error));
+    });
+  </script>
+
+</body>
+</html>

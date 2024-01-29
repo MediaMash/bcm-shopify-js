@@ -1,0 +1,41 @@
+body {
+    text-align: center;
+  }
+  
+  #videoContainer {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+  }
+  
+  .video-card {
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  
+  .video-card video {
+    width: 100%;
+    height: auto;
+    border-radius: 8px 8px 0 0;
+  }
+  
+  .video-details {
+    padding: 15px;
+    text-align: left;
+  }
+  
+  .video-details h3 {
+    margin-bottom: 10px;
+  }
+  
+  /* Add additional styles based on your design preferences */
+  
+  /* Adjustments for responsiveness */
+  @media only screen and (max-width: 768px) {
+    #videoContainer {
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    }
+  }
+  

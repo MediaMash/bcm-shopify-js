@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Page</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+    li {
+      margin: 10px;
+      cursor: pointer;
+      border: 1px solid #ccc;
+      padding: 10px;
+    }
+    .selected {
+      background-color: #e0e0e0;
+    }
+    #submitBtn {
+      margin-top: 20px;
+      padding: 10px;
+      background-color: #4caf50;
+      color: white;
+      cursor: pointer;
+      border: none;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Admin Page</h1>
+  <input type="text" id="adminIdInput" placeholder="Enter Admin ID">
+
+  <ul id="videoList">
+    <!-- Video list items will be dynamically added here using JavaScript -->
+  </ul>
+
+  <button id="submitBtn" onclick="submitSelectedVideos()">Submit Selected Videos</button>
+
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+  <script>
+  let selectedVideos = [];
+let data; // Define data variable at a higher scope
+
+const apiUrl = 'https://stingray-app-4wzxb.ondigitalocean.app/video/api/videos/';
+const backendUrl = 'http://localhost:3000/admin'; // Replace with your actual backend URL
+
+document.addEventListener('DOMContentLoaded', function () {
+  fetch(apiUrl)
+    .then(response => response.json())
+    .then(apiData => {
+      console.log('API Response:', apiData);
+      data = apiData; // Assign apiData to the data variable
+
+      const videoList = document.getElementById('videoList');
+
+      data.forEach(video => {
+        const listItem = document.createElement('li');
+        listItem.dataset.id = video.id; // Store video ID in data attribute
+        listItem.textContent = `${video.name} (ID: ${video.id})`;
+
+        listItem.addEventListener('click', toggleSelection);
+
+        videoList.appendChild(listItem);
+      });
+    })
+    .catch(error => console.error('Error fetching data:', error));
+});
+
+function toggleSelection(event) {
+  const selectedListItem = event.currentTarget;
+  selectedListItem.classList.toggle('selected');
+
+  const videoId = selectedListItem.dataset.id;
+
+  if (selectedListItem.classList.contains('selected')) {
+    // If selected, add the video ID to the array
+    selectedVideos.push(videoId);
+  } else {
+    // If unselected, remove the video ID from the array
+    selectedVideos = selectedVideos.filter(id => id !== videoId);
+  }
+
+  // Limit the selection to 3 videos
+  if (selectedVideos.length > 3) {
+    selectedListItem.classList.remove('selected');
+    alert('You can only select up to 3 videos for a section.');
+    // Remove the last selected video ID from the array
+    selectedVideos.pop();
+  }
+}
+
+function submitSelectedVideos() {
+  // Check if any videos are selected
+  if (selectedVideos.length === 0) {
+    alert('Please select at least one video before submitting.');
+    return;
+  }
+
+  // Send selected video IDs to the backend
+  //console.log('Selected Videos:', selectedVideos);
+
+  // Create an array of video details for the selected videos
+  const selectedVideoDetails = selectedVideos.map(videoId => {
+    const video = findVideoById(videoId);
+    return {
+      id: video.id,
+      name: video.name,
+      description: video.description || '',
+      playback_hls: video.playback_hls || ''
+    };
+  });
+
+  // Log all details of the selected videos
+  console.log('Selected Videos Details:', selectedVideoDetails);
+
+  //
+
+  // Send the data to the backend
+  fetch(backendUrl, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      adminId: getAdminId(), // Implement a function to get the admin ID
+      selectedVideos: selectedVideoDetails,
+    }),
+  })
+  .then(response => {
+    if (!response.ok) {
+      throw new Error('Failed to send video data to the backend.');
+    }
+    console.log('Video data sent to the backend successfully.');
+    // Clear the selectedVideos array
+    selectedVideos = [];
+    // Remove the 'selected' class from all list items
+    const listItems = document.querySelectorAll('li');
+    listItems.forEach(item => item.classList.remove('selected'));
+    alert('Selected videos submitted successfully.');
+  })
+  .catch(error => console.error('Error sending video data to the backend:', error));
+}
+
+function findVideoById(videoId) {
+  // Convert videoId to string (or number) to ensure proper comparison
+  const idToFind = String(videoId); // or Number(videoId)
+
+  // Find the video in the data based on its ID
+  const video = data.find(video => String(video.id) === idToFind) || {};
+  console.log('Found Video:', video); // Log the found video object
+  return video;
+}
+
+
+function getAdminId() {
+  // Retrieve the admin ID from the input field
+  const adminIdInput = document.getElementById('adminIdInput');
+  const adminId = adminIdInput.value.trim(); // Trim any leading/trailing spaces
+
+  if (!adminId) {
+    alert('Please enter your admin ID.');
+    // Optionally, you can return a default admin ID or handle the lack of input in some other way
+    return null;
+  }
+
+  return adminId;
+}
+
+
+  </script>
+
+</body>
+</html>

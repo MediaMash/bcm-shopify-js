@@ -28,52 +28,53 @@
 
   
   <script>
-    // Wait for the document to be ready
-    $(document).ready(function () {
-      // Fetch videos and ads from the REST API endpoint using the fetch method
-      const url = 'https://stingray-app-4wzxb.ondigitalocean.app/video/api/videos/';
-      fetch(url)
-        .then(response => {
-          if (!response.ok) {
-            throw new Error('Network response was not ok');
-          }
-          return response.json();
-          console.log(data)
-        })
-        .then(data => {
-          // Iterate over each video in the response
-          data.forEach(function (item) {
-            // Create a new carousel item for each video
-            const itemHtml = '<div class="carousel-item">' +
-              '<a class="cart-icon" href=""> </a>' +
-              '<video width="100%" class="video-js vjs-default-skin vjs-big-play-centered" loop autoplay muted>' +
-              '</video>' +
-              '<div class="carousel-caption">' +
-              '<h5>' + item.name + '</h5>' +
-              '</div>' +
-              '<div class="video-item-desc">' + // Uncommented the video-item-desc div
-              '</div>' +
-              '</div>';
-            $('.bcm-grid').append(itemHtml);
+   // Wait for the document to be ready
+$(document).ready(function () {
+  // Fetch videos and ads from the REST API endpoint using the fetch method
+  const url = 'https://stingray-app-4wzxb.ondigitalocean.app/video/api/videos/';
+  fetch(url)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
+    })
+    .then(data => {
+      // Log the fetched data to the console
+      console.log('Fetched Data:', data);
 
-            // Initialize the video player for each video
-            const video = videojs($('.carousel-item').last().find('video').get(0), { fluid: true });
+      // Iterate over each video in the response
+      data.forEach(function (item) {
+        // Create a new carousel item for each video
+        const itemHtml = '<div class="carousel-item">' +
+          '<a class="cart-icon" href=""> </a>' +
+          '<video width="100%" class="video-js vjs-default-skin vjs-big-play-centered" loop autoplay muted>' +
+          '</video>' +
+          '<div class="carousel-caption">' +
+          '<h5>' + item.name + '</h5>' +
+          '</div>' +
+          '<div class="video-item-desc">' + 
+          '</div>' +
+          '</div>';
+        $('.bcm-grid').append(itemHtml);
 
-            video.src({
-              src: item.playback_hls,
-              type: 'application/x-mpegURL'
-            });
-            video.load();
-            video.play();
+        // Initialize the video player for each video
+        const video = videojs($('.carousel-item').last().find('video').get(0), { fluid: true });
 
-         
-          });
+        video.src({
+          src: item.playback_hls,
+          type: 'application/x-mpegURL'
+        });
+        video.load();
+        video.play();
+      });
 
-          $('.carousel-item').addClass('active');
-          $('.carousel-ads').addClass('active');
-        })
-        .catch(error => console.error('Error fetching data:', error));
-    });
+      $('.carousel-item').addClass('active');
+      $('.carousel-ads').addClass('active');
+    })
+    .catch(error => console.error('Error fetching data:', error));
+});
+
   </script>
 
 </body>

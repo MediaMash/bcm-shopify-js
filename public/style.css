@@ -109,7 +109,7 @@ body {
     width: 100%;
     box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.3);
     background-color: white;
-    padding: 16px 16px 32px 16px; /* converted from 1em, 2em to px */
+    padding: 16px 16px 32px 16px; 
     min-height: 200px;
     z-index: 100;
     transition: 0.2s;
